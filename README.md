@@ -1,5 +1,12 @@
 # NEO_sample
 
+## Reason:
+I am working with neo private network, but I couldn't invoke a transaction using neonjs.
+Then I found out that neonjs is using an API to get the balance which is not provided by rpc.
+And finally, I found **Neon wallet DB project** which is mentioned in its README that:
+> This code runs a database for Neon that mirrors the NEO blockchain and serves several APIs that don't exist anywhere else (for example, an API to get claims and the full transaction history associated with an address).
+There you go, this sample will guide you steps-by-steps how to setup and invoke transaction in private network.
+
 ## Requirements
 - Docker and docker-compose
 - Python 3 (3.6)
@@ -73,7 +80,13 @@ then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see
 
 
 2. Neon wallet DB
+- Neon wallet DB is used to watch all data from listened nodes and update those to mongoDB
+- There are 3 main components:
+> A clock which periodically watch to targeted node and put data to redis queue.
+> A worker which is a listener to redis queue, whenever there is data in queue, it will get data and update them into mongoDB.
+> A Flask server which provides api to get necessary data such as transaction info or address's balance. For more information please read code in **api/api.py**
 - Neon-js is using this project for checking wallet balances therefore we must have it in order to invoke a transaction
+- Note: I will create pull request for this, but in the mean time, just modify the following in order to make it work with private network.
 - create ```docker-compose.yml``` file with the following content:
 ```yaml
 version: "3"
@@ -127,7 +140,7 @@ logs_db = db['logs']
 address_db = db['addresses']
 
 ```
-- add **PRIVATE_SEEDS** to **api/util.py** with the following content:
+- add **PRIVATENET_SEEDS** to **api/util.py** with the following content:
 ```python
 PRIVATENET_SEEDS = [
     "http://localhost:30333",
@@ -137,4 +150,99 @@ PRIVATENET_SEEDS = [
 ]
 ```
 - In **api/blockchain.py** modify the following:
-> line 7:
+> line 7: add **PRIVATENET_SEEDS**, it should look like `from .util import MAINNET_SEEDS, TESTNET_SEEDS, PRIVATENET_SEEDS`
+> line 11: this is get NODEAPI environment, add `PRIVATENET_SEEDS[0]` at default value `nodeAPI = os.environ.get('NODEAPI', PRIVATENET_SEEDS[0])`
+> line 13: add 'PrivNet' at default value, it should look like `net = os.environ.get('NET', 'PrivNet')`
+> at **checkSeeds** function, replace the body with the following content (I just add check private net condition into it):
+```python
+def checkSeeds():
+    if net == "MainNet":
+        seed_list = MAINNET_SEEDS
+    elif net == "PrivNet":
+        seed_list = PRIVATENET_SEEDS
+    else:
+        seed_list = TESTNET_SEEDS
+
+    seeds = []
+
+    for test_rpc in seed_list:
+        print(test_rpc)
+        try:
+            start = time.time()
+            data = getBlockCount(test_rpc)
+            getBlock(int(data["result"])-1, test_rpc)
+            elapsed = time.time() - start
+            seeds.append({"url": test_rpc, "status": True, "block_height": int(data["result"]), "time": elapsed })
+        except:
+            seeds.append({"url": test_rpc, "status": False, "block_height": None, "time": None})
+            continue
+        print(seeds[-1])
+    blockchain_db['meta'].update_one({"name": "node_status"}, {"$set": {"nodes": seeds}}, upsert=True)
+    return True
+```
+> Finally, add the following function in order to drop all db when you want to init again
+```python
+def drop_db():
+    blockchain_db["transactions"].drop()
+    blockchain_db["meta"].drop()
+    blockchain_db["blockchain"].drop()
+    blockchain_db["logs"].drop()
+    blockchain_db["addresses"].drop()
+```
+- In **clock.py** change the following:
+> line 4: add **drop_db** at the end of the line, `from api.blockchain import storeLatestBlockInDB, getBlockCount, blockchain_db, storeBlockInDB, checkSeeds, get_highest_node, drop_db`
+> line 41: comment `sched.start()`, we will move this action into **main** function
+> Add the following after line 41:
+```python
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
+if __name__ == "__main__":
+
+    import argparse
+
+    parser = argparse.ArgumentParser("clock")
+    parser.add_argument("--init", help="True/False", type=str2bool)
+    args = parser.parse_args()
+
+    if args.init is True:
+        try:
+            drop_db()
+            checkSeeds()
+            blockchain_db["meta"].insert_one({"name": "lastTrustedBlock", "value": 0})
+        except Exception as e:
+            print(e)
+
+    sched.start()
+```
+> If **--init** is **True** then all data will be dropped and clock will watch from the beginning.
+> Otherwise passing **False** then clock will continue watching data from targeted nodes.
+- OK everything is ready to run.
+- Firstly, run clock to start watching and init database
+```bash
+python3 clock.py --init=True
+```
+- Then run worker. Note: you can run many workers at once
+```bash
+python3 worker.py
+```
+- Then start server:
+```bash
+python3 api/app.py
+```
+- Use any mongoUI tool you like to check mongo database. Check whether number of block equal to the current block in rpc server then you are ready to invoke the transaction.
+
+## Run the sample
+- Go to **neo_sample**
+```bash
+npm install
+node index.js
+```
+
+## Good luck
