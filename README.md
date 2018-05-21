@@ -5,6 +5,7 @@ I am working with neo private network, but I couldn't invoke a transaction using
 Then I found out that neonjs is using an API to get the balance which is not provided by rpc.
 And finally, I found **Neon wallet DB project** which is mentioned in its README that:
 > This code runs a database for Neon that mirrors the NEO blockchain and serves several APIs that don't exist anywhere else (for example, an API to get claims and the full transaction history associated with an address).
+
 There you go, this sample will guide you steps-by-steps how to setup and invoke transaction in private network.
 
 ## Requirements
