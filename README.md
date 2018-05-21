@@ -87,7 +87,7 @@ then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see
 
 > A worker which is a listener to redis queue, whenever there is data in queue, it will get data and update them into mongoDB.
 
-> A Flask server which provides api to get necessary data such as transaction info or address's balance. For more information please read code in **api/api.py**
+> A Flask server which provides api to get necessary data such as transaction info or address's balance. For more information please read code in **api/app.py**
 - Neon-js is using this project for checking wallet balances therefore we must have it in order to invoke a transaction
 - Note: I will create pull request for this, but in the mean time, just modify the following in order to make it work with private network.
 - create ```docker-compose.yml``` file with the following content:
