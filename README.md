@@ -14,7 +14,7 @@ There you go, this sample will guide you steps-by-steps how to setup and invoke 
 - [Neo python](https://github.com/CityOfZion/neo-python)
 - [Neon Wallet DB project](https://github.com/CityOfZion/neon-wallet-db)
 ## Installation
-1. Private Network
+1. **Private Network**
 - From **neo-python/docker**, modify **docker-compose-neoscan.yml** to expose 8081 port (or any port you want to expose for your rpc server)
 ```yaml
 version: "3"
@@ -80,11 +80,13 @@ then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see
 - Whenever synced_block and total_block are equal, your RPC server is ready to use.
 
 
-2. Neon wallet DB
+2. **Neon wallet DB**
 - Neon wallet DB is used to watch all data from listened nodes and update those to mongoDB
 - There are 3 main components:
 > A clock which periodically watch to targeted node and put data to redis queue.
+
 > A worker which is a listener to redis queue, whenever there is data in queue, it will get data and update them into mongoDB.
+
 > A Flask server which provides api to get necessary data such as transaction info or address's balance. For more information please read code in **api/api.py**
 - Neon-js is using this project for checking wallet balances therefore we must have it in order to invoke a transaction
 - Note: I will create pull request for this, but in the mean time, just modify the following in order to make it work with private network.
