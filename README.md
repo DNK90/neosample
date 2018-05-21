@@ -154,8 +154,11 @@ PRIVATENET_SEEDS = [
 ```
 - In **api/blockchain.py** modify the following:
 > line 7: add **PRIVATENET_SEEDS**, it should look like `from .util import MAINNET_SEEDS, TESTNET_SEEDS, PRIVATENET_SEEDS`
+
 > line 11: this is get NODEAPI environment, add `PRIVATENET_SEEDS[0]` at default value `nodeAPI = os.environ.get('NODEAPI', PRIVATENET_SEEDS[0])`
+
 > line 13: add 'PrivNet' at default value, it should look like `net = os.environ.get('NET', 'PrivNet')`
+
 > at **checkSeeds** function, replace the body with the following content (I just add check private net condition into it):
 ```python
 def checkSeeds():
@@ -194,7 +197,9 @@ def drop_db():
 ```
 - In **clock.py** change the following:
 > line 4: add **drop_db** at the end of the line, `from api.blockchain import storeLatestBlockInDB, getBlockCount, blockchain_db, storeBlockInDB, checkSeeds, get_highest_node, drop_db`
+
 > line 41: comment `sched.start()`, we will move this action into **main** function
+
 > Add the following after line 41:
 ```python
 def str2bool(v):
@@ -225,6 +230,7 @@ if __name__ == "__main__":
     sched.start()
 ```
 > If **--init** is **True** then all data will be dropped and clock will watch from the beginning.
+
 > Otherwise passing **False** then clock will continue watching data from targeted nodes.
 - OK everything is ready to run.
 - Firstly, run clock to start watching and init database
