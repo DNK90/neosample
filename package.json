@@ -1,0 +1,21 @@
+{
+  "name": "neojs_1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cityofzion/neon-js": "^3.2.1",
+    "async": "~2.5.0",
+    "axios": "^0.16.2",
+    "lodash": "~4.17.4",
+    "loglevel": "^1.6.1",
+    "mathjs": "^4.1.0",
+    "moment": "^2.20.1",
+    "mongoose": "~4.11.3"
+  }
+}
