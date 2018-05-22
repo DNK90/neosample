@@ -1,7 +1,7 @@
 const neonjs = require('@cityofzion/neon-js');
 
-let PRIVATE_KEY = "KxDgvEKzgSBPPfuVfw67oPQBSjidEiqTHURKSDL1R7yGaGYAeYnr";
-let account = new neonjs.wallet.Account(PRIVATE_KEY);
+let WIF_KEY = "KxDgvEKzgSBPPfuVfw67oPQBSjidEiqTHURKSDL1R7yGaGYAeYnr";
+let account = new neonjs.wallet.Account(WIF_KEY);
 let fromAddrScriptHash = neonjs.wallet.getScriptHashFromAddress(account.address);
 
 // you can choose either neondb or neoscan, 
