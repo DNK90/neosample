@@ -1,6 +1,7 @@
 # NEO_sample
 
 In order to invoke a transaction through neon-js, you should add **net** into your config (**net** can be neoscan url or neonDB url).
+
 This sample will guide you steps-by-steps how to setup and invoke transaction in private network.
 
 ## Requirements
@@ -75,7 +76,7 @@ then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see
 - Whenever synced_block and total_block are equal, your RPC server is ready to use.
 
 
-### 2. Neon wallet DB (Note: if you use neoscan url you don't need to do this step. neoscan url has already included in sample code)
+### 2. Neon wallet DB (Note: if you use neoscan url, you don't need to do this step. neoscan url has already included in sample code)
 - Neon wallet DB is used to watch all data from listened nodes and update those to mongoDB
 - There are 3 main components:
 > A clock which periodically watch to targeted node and put data to redis queue.
