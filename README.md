@@ -2,7 +2,9 @@
 
 In order to invoke a transaction through neon-js, you should add **net** into your config (**net** can be neoscan url or neonDB url).
 
-This sample will guide you steps-by-steps how to setup and invoke transaction in private network.
+And The RPC server in dotnet (30333-30336) doesn't work and it always return false. RPC Server on Python will help you solve this problem.
+
+This sample will guide you steps-by-steps how to setup neonDB url, RPC server on Python and invoke transaction to NEO private network.
 
 ## Requirements
 - Docker and docker-compose
