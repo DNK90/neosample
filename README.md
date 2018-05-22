@@ -79,6 +79,7 @@ then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see
 
 
 ### 2. Neon wallet DB (Note: if you use neoscan url, you don't need to do this step. neoscan url has already included in sample code)
+- Neon wallet DB is only support testnet and mainnet. Therefore, we need to modify a bit to work with private network.
 - Neon wallet DB is used to watch all data from listened nodes and update those to mongoDB
 - There are 3 main components:
 > A clock which periodically watch to targeted node and put data to redis queue.
@@ -87,7 +88,6 @@ then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see
 
 > A Flask server which provides api to get necessary data such as transaction info or address's balance. For more information please read code in **api/app.py**
 - Neon-js is using this project for checking wallet balances therefore we must have it in order to invoke a transaction
-- Note: I will create pull request for this, but in the mean time, just modify the following in order to make it work with private network.
 - create ```docker-compose.yml``` file with the following content:
 ```yaml
 version: "3"
