@@ -1,12 +1,7 @@
 # NEO_sample
 
-## Reason:
-I am working with neo private network, but I couldn't invoke a transaction using neonjs.
-Then I found out that neonjs is using an API to get the balance which is not provided by rpc.
-And finally, I found **Neon wallet DB project** which is mentioned in its README that:
-> This code runs a database for Neon that mirrors the NEO blockchain and serves several APIs that don't exist anywhere else (for example, an API to get claims and the full transaction history associated with an address).
-
-There you go, this sample will guide you steps-by-steps how to setup and invoke transaction in private network.
+In order to invoke a transaction through neon-js, you should add **net** into your config (**net** can be neoscan url or neonDB url).
+This sample will guide you steps-by-steps how to setup and invoke transaction in private network.
 
 ## Requirements
 - Docker and docker-compose
@@ -14,7 +9,7 @@ There you go, this sample will guide you steps-by-steps how to setup and invoke 
 - [Neo python](https://github.com/CityOfZion/neo-python)
 - [Neon Wallet DB project](https://github.com/CityOfZion/neon-wallet-db)
 ## Installation
-1. **Private Network**
+### 1. Private Network
 - From **neo-python/docker**, modify **docker-compose-neoscan.yml** to expose 8081 port (or any port you want to expose for your rpc server)
 ```yaml
 version: "3"
@@ -80,7 +75,7 @@ then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see
 - Whenever synced_block and total_block are equal, your RPC server is ready to use.
 
 
-2. **Neon wallet DB**
+### 2. Neon wallet DB (Note: if you use neoscan url you don't need to do this step. neoscan url has already included in sample code)
 - Neon wallet DB is used to watch all data from listened nodes and update those to mongoDB
 - There are 3 main components:
 > A clock which periodically watch to targeted node and put data to redis queue.
