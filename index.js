@@ -3,7 +3,14 @@ const neonjs = require('@cityofzion/neon-js');
 let PRIVATE_KEY = "KxDgvEKzgSBPPfuVfw67oPQBSjidEiqTHURKSDL1R7yGaGYAeYnr";
 let account = new neonjs.wallet.Account(PRIVATE_KEY);
 let fromAddrScriptHash = neonjs.wallet.getScriptHashFromAddress(account.address);
-let net = "http://localhost:5000";
+
+// you can choose either neondb or neoscan, 
+// there is a switch function that will automatically switch between neoscan (v1) and neondb (v2) if exception is thrown 
+let net = {
+	neoscan: "http://localhost:4000/api/main_net",
+	neondb: "http://localhost:5000"
+}
+
 let contract = "86d58778c8d29e03182f38369f0d97782d303cc0";
 let gas = 1;
 
@@ -33,7 +40,7 @@ function sendrawtransaction(idx) {
 	if (idx < rpcUrl.local.length) {
 		neonjs.api.doInvoke({
 		    url: rpcUrl.local[idx],
-		    net: net,
+		    net: net.neondb,
 		    intents: intents,
 		    script: neonjs.default.create.script({
 		        scriptHash: contract,
