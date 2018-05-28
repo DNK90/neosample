@@ -1,3 +1,18 @@
+/**
+In order to run this sample, you need to do the following: 
+    1 - Your smart contract should implement Verification. Eg: 
+        ```
+            from boa.interop.Neo.Runtime import GetTrigger
+
+            trigger = GetTrigger()
+
+            if trigger == Verification():
+                return True
+        ```
+    2 - Import a contract hash into cfg.account.address using cfg.account.publicKey from your 'Prompt'
+    3 - Replace to_address with your target address
+**/
+
 const cfg = require('./config');
 let to_address = "AbCunncuRGDR7CVMe8vLtbfqTATkDRfDsY";
 let contract_address = "APHG4WsthtmYP9jY53LS5nMgBZzzSFWjNw";
