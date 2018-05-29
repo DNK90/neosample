@@ -10,7 +10,7 @@ This sample will guide you steps-by-steps how to setup neonDB url, RPC server on
 - Docker and docker-compose
 - Python 3 (3.6)
 - [Neo python](https://github.com/CityOfZion/neo-python)
-- [Neon Wallet DB project](https://github.com/CityOfZion/neon-wallet-db)
+- [Neon Wallet DB project](https://github.com/CityOfZion/neon-wallet-db) (optional, you can use built-in neoscan)
 ## Installation
 ### 1. Private Network
 - From **neo-python/docker**, modify **docker-compose-neoscan.yml** to expose 8081 port (or any port you want to expose for your rpc server)
