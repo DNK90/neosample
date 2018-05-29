@@ -58,7 +58,7 @@ services:
 
 ```
 - From command line, go to neo-python/docker and start neo-privnet, neo-scan and postgresql using the following command:
-```docker-compose -f docker-compose-neoscan.yml up```
+```docker-compose -f docker-compose-neoscan.yml up -d```
 - Wait until every container is started, access to **neo-privnet** by typing the following command:
 ```docker exec -it neo-privnet bash```
 - Start claiming GAS by typing the following command:
