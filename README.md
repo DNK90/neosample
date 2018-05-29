@@ -249,7 +249,7 @@ python3 api/app.py
 - Go to **neo_sample**
 ```bash
 npm install
-node index.js
+node sendrawtransaction.js
 ```
 
 ## Good luck
