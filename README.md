@@ -61,11 +61,25 @@ services:
 ```docker-compose -f docker-compose-neoscan.yml up -d```
 - Wait until every container is started, access to **neo-privnet** by typing the following command:
 ```docker exec -it neo-privnet bash```
+- Update the latest neo-python version (Note: after this, `neopy` cannot be used anymore)
+```bash
+git pull
+```
+- Re-install all dependencies:
+```bash
+pip3 install -r requirements.txt
+```
 - Start claiming GAS by typing the following command:
 `python3 claim_gas_fixedwallet.py` and wait until it finish running.
-- Rebuild wallet to update gas. Open prompt in **private net mode** by typing `neopy`
+- Rebuild wallet to update gas. Open prompt in **private net mode** by typing 
+```python3
+python3 neo/bin/prompt.py -p
+```
 - open wallet by typing the following:
-```open wallet neo-privnet.wallet``` and type password ```coz```
+```bash
+open wallet neo-privnet.wallet
+``` 
+and type password ```coz```
 then type ```wallet rebuild``` to update gas to wallet. Type ```wallet``` to see wallet info
 - By default, sample contract has already been built within **/neo-python/docs/source/example/** directory. In this example, I import sample2.avm in to the network by typing the following (for more information about this command please see [here](https://neo-python.readthedocs.io/en/latest/neo/SmartContract/smartcontracts.html#importing-a-smart-contract)):
 >```import contract /neo-python/docs/source/example/sample2.avm 070202 02 False False```
